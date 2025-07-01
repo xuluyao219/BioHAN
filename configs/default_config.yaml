@@ -1,0 +1,249 @@
+# BioHAN Default Configuration File
+# Biologically-Informed Hierarchical Attention Networks
+
+# Project information
+project:
+  name: "BioHAN"
+  version: "1.0.0"
+  description: "Biologically-Informed Cell Type Classification"
+
+# Path configuration
+paths:
+  data_dir: "real_datasets"
+  results_dir: "results"
+  figures_dir: "figures"
+  cache_dir: "cache"
+
+# Dataset configuration
+datasets:
+  # Available datasets list
+  available:
+    - pbmc_multimodal_nygc
+    - lung_atlas_core
+    - breast_cancer_atlas
+    - kidney_atlas
+    - pancreas_islet
+    - covid_combat
+    - brain_vip_neurons_mtg
+    - heart_endothelial_dcm
+    - endothelial_cells_multitissue
+
+  # Default datasets to run
+  default:
+    - pbmc_multimodal_nygc
+    - lung_atlas_core
+    - kidney_atlas
+
+# Data preprocessing
+preprocessing:
+  # Gene selection
+  n_top_genes: 2000
+  min_genes: 200
+  min_cells: 3
+
+  # Normalization
+  target_sum: 10000
+  log_transform: true
+  scale: true
+  max_value: 10
+
+  # Downsampling
+  downsample: true
+  max_cells: 50000
+
+  # Train/test split
+  test_size: 0.2
+  random_state: 42
+
+# Model configuration
+model:
+  # BioHAN architecture parameters
+  biohan:
+    hidden_dim: 256
+    n_modules: 100
+    n_layers: 3
+    n_states: 32
+    dropout: 0.2
+
+  # VAE baseline parameters
+  vae:
+    hidden_dim: 256
+    latent_dim: 64
+
+  # Simple neural network parameters
+  simple_nn:
+    hidden_dim: 256
+    dropout: 0.3
+
+# Training configuration
+training:
+  # Basic parameters
+  batch_size: 128
+  learning_rate: 0.001
+  weight_decay: 0.00001
+  n_epochs: 50
+
+  # Optimizer
+  optimizer: "adam"
+
+  # Learning rate scheduler
+  scheduler: "plateau"
+  patience: 10
+  factor: 0.5
+  min_lr: 0.000001
+
+  # Early stopping
+  early_stopping: true
+  early_patience: 20
+
+  # Other
+  gradient_clip: 1.0
+  seed: 42
+  num_workers: 0
+
+  # Quick mode for testing
+  quick_mode:
+    n_epochs: 10
+    batch_size: 256
+
+# Evaluation configuration
+evaluation:
+  # Main metrics
+  metrics:
+    - accuracy
+    - ari
+    - nmi
+    - silhouette
+
+  # Biological evaluation
+  biological:
+    check_known_markers: true
+    pathway_enrichment: true
+
+# Experiment configuration
+experiments:
+  # Methods to run
+  methods:
+    - biohan
+    - vae
+    - simple_nn
+
+  # Experiment modes
+  modes:
+    quick:
+      datasets: ["brain_vip_neurons_mtg"]
+      methods: ["biohan", "vae"]
+      n_epochs: 10
+
+    standard:
+      datasets: ["pbmc_multimodal_nygc", "lung_atlas_core", "kidney_atlas"]
+      methods: ["biohan", "vae", "simple_nn"]
+      n_epochs: 50
+
+    full:
+      datasets: "all"
+      methods: "all"
+      n_epochs: 100
+
+    consistency:
+      datasets: ["pbmc_multimodal_nygc", "lung_atlas_core", "kidney_atlas"]
+      methods: ["biohan", "simple_nn", "vae"]
+      n_epochs: 30
+
+# Visualization configuration
+visualization:
+  # Chart style
+  style: "seaborn-v0_8-paper"
+  dpi: 300
+  figure_format: "pdf"
+
+  # Color scheme
+  color_palette:
+    biohan: "#2E86AB"
+    vae: "#A23B72"
+    simple_nn: "#F18F01"
+    random_forest: "#C73E1D"
+    svm: "#6A994E"
+
+  # Figures to generate
+  figures:
+    - performance_comparison
+    - marker_genes_heatmap
+    - umap_visualization
+    - training_curves
+    - ablation_results
+
+# Biological knowledge configuration
+biological_knowledge:
+  # Data sources
+  sources:
+    gene_interactions: "STRING"
+    pathways: "KEGG"
+    gene_ontology: "GO"
+
+  # Cache settings
+  use_cache: true
+  cache_dir: "biological_cache"
+
+  # Filter thresholds
+  interaction_threshold: 0.7
+  pathway_min_genes: 5
+
+# Report generation
+reporting:
+  # Report formats
+  formats:
+    - markdown
+    - latex
+    - html
+
+  # Include content
+  include:
+    - performance_summary
+    - method_comparison
+    - biological_discoveries
+    - computational_efficiency
+
+  # LaTeX settings
+  latex:
+    template: "ieee"
+    bibliography: "references.bib"
+
+# Computational resources
+resources:
+  # GPU settings
+  gpu:
+    enabled: true
+    device_id: 0
+    mixed_precision: false
+
+  # Memory management
+  memory:
+    limit_gb: 32
+    batch_size_adjustment: true
+
+  # Parallel settings
+  parallel:
+    n_jobs: 1
+    backend: "threading"
+
+# Logging configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  save_to_file: true
+  log_dir: "logs"
+
+# Advanced settings
+advanced:
+  # Debug options
+  debug:
+    save_attention_weights: false
+    save_intermediate_features: false
+    profile_memory: false
+
+  # Experiment tracking
+  tracking:
+    use_wandb: false
+    use_tensorboard: true
+    project_name: "biohan-experiments"
