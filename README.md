@@ -118,11 +118,11 @@ BioHAN combines five key components:
 If you use BioHAN, please cite:
 
 ```bibtex
-@article{biohan2024,
+@article{biohan2025,
   title={BioHAN: Biologically-Informed Hierarchical Attention Networks for Cross-Dataset Reproducible Cell Type Discovery},
-  author={[Your Name] and others},
+  author={Xulu Yao and others},
   journal={bioRxiv},
-  year={2024}
+  year={2025}
 }
 ```
 
