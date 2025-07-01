@@ -142,4 +142,4 @@ MIT License - see [LICENSE](LICENSE) file.
 ## Contact
 
 - GitHub Issues: [https://github.com/xuluyao219/BioHAN/issues](https://github.com/xuluyao219/BioHAN/issues)
-- Email: your.email@institution.edu
+- Email: xulu.yao@ieee.org
